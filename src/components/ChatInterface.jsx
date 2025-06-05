@@ -48,20 +48,22 @@ const ChatInterface = ({
     if (data) setMessages(data);
   };
 
-  const handleSend = async () => {
-    if (!input.trim() || isLoading) return;
+ // En ChatInterface.jsx, reemplaza la función handleSend:
 
+const handleSend = async () => {
+    if (!input.trim() || isLoading) return;
+  
     const userMessage = {
       id: Date.now().toString(),
       role: 'user',
       content: input,
       created_at: new Date().toISOString()
     };
-
+  
     setMessages(prev => [...prev, userMessage]);
     setInput('');
     setIsLoading(true);
-
+  
     try {
       let response;
       
@@ -75,14 +77,14 @@ const ChatInterface = ({
       } else {
         response = await sendGuestChatMessage(input);
       }
-
+  
       // Handle different response types
       if (response.type === 'investor_results') {
         onInvestorsFound(response.data);
         
         const aiMessage = {
           id: Date.now().toString(),
-          role: 'assistant',
+          role: 'assistant', 
           content: response.follow_up_message || `He encontrado ${response.data.length} inversores que podrían ser relevantes para tu proyecto.`,
           created_at: new Date().toISOString()
         };
